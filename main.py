@@ -2,6 +2,8 @@ import os
 import logging
 import numpy as np
 import cv2
+import traceback
+from matplotlib import pyplot as plt
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -16,17 +18,13 @@ def get_img_path(image_name):
 def verify_if_path_exists(path):
     return os.path.exists(path)
 
-def get_image(image_name):
-    if not (verify_if_path_exists(get_img_path(image_name))):
-        logging.error("Image not found! Please specify a correct name.")
-    else:
-        logging.info("Image opened")
 
 def print_pixels_values(opened_image):
     try:
         print(opened_image)
     except(Exception):
         logging.error("Are you sure this image is a numpy array?")
+        traceback.print_exc()
 
 
 def get_image_height(opened_image):
@@ -41,14 +39,23 @@ def get_image_color_levels(opened_image):
     height,width,color_levels = opened_image.shape
     return color_levels
 
+def show_colors_histogram(colored_opened_image):
+    color = ('b', 'g', 'r')
+
+    for i, col in enumerate(color):
+        histr = cv2.calcHist([fragment_image], [i], None, [256], [0, 256])
+        plt.plot(histr, color=col)
+        plt.xlim([0, 256])
+    plt.show()
+
+
+
+
 if __name__ == "__main__":
-    print("Ciao")
-    get_image(IMAGE_NAME)
 
     fragment_image = cv2.imread(get_img_path(IMAGE_NAME),cv2.IMREAD_COLOR)
-    print_pixels_values(fragment_image)
-    # print(get_image_color_levels(fragment_image))
-    #
+    #show_colors_histogram(fragment_image)
+
     # cv2.imshow('image', fragment_image)
     #
     # cv2.waitKey(0)
