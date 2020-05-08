@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import traceback
 from matplotlib import pyplot as plt
+from pixel_manipulator import *
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -54,10 +55,11 @@ def show_colors_histogram(colored_opened_image):
 if __name__ == "__main__":
 
     fragment_image = cv2.imread(get_img_path(IMAGE_NAME),cv2.IMREAD_COLOR)
-    #show_colors_histogram(fragment_image)
 
-    # cv2.imshow('image', fragment_image)
-    #
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    pixel_neighbors = get_neighbors_pixels_colors(fragment_image,31,60)
+    print(pixel_neighbors)
+
+    cv2.imshow('image', fragment_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
