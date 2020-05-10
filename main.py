@@ -9,12 +9,14 @@ from utils import  *
 
 logging.basicConfig(level=logging.DEBUG)
 
-
 IMAGE_NAME = "frag_107.png"
+
+
 
 def get_img_path(image_name):
     folder_path = os.getcwd()
     return folder_path + "\images\\fragments\\" + image_name
+
 
 def verify_if_path_exists(path):
     return os.path.exists(path)
@@ -28,14 +30,6 @@ def print_pixels_values(opened_image):
         traceback.print_exc()
 
 
-def get_image_height(opened_image):
-    height,width,color_levels = opened_image.shape
-    return height
-
-def get_image_width(opened_image):
-    height,width,color_levels = opened_image.shape
-    return width
-
 def get_image_size(opened_image):
     height, width, color_levels = opened_image.shape
     size_dict = dict()
@@ -43,28 +37,36 @@ def get_image_size(opened_image):
     size_dict['width'] = dict(width)
     return size_dict
 
+
+def get_image_height(opened_image):
+    height,width,color_levels = opened_image.shape
+    return height
+
+
+def get_image_width(opened_image):
+    height,width,color_levels = opened_image.shape
+    return width
+
+
 def get_image_color_levels(opened_image):
     height,width,color_levels = opened_image.shape
     return color_levels
 
+
 def get_percentage_of_black_pixels(opened_image):
-    pixel_count = 0
-    black_pixels_count = 0
-    image = np.array(opened_image)
-    image.flatten()
+    # TODO
+    # This method must me implemented
+    pass
+
+    #return calculate_percentage(black_pixels_count, pixel_count + black_pixels_count)
 
 
-    for pixel in image:
+def get_percentage_of_white_pixels(opened_image):
+    # TODO
+    # This method must me implemented
+    pass
 
-        pixel_count += 1
-        print(image[pixel])
-        if (np.array_equal(image[pixel], [0, 0, 0])):
-            black_pixels_count += 1
-
-    return calculate_percentage(black_pixels_count, pixel_count + black_pixels_count)
-
-
-
+    # return calculate_percentage(white_pixels_count, pixel_count + white_pixels_count)
 
 
 def show_colors_histogram(colored_opened_image):
@@ -79,12 +81,8 @@ def show_colors_histogram(colored_opened_image):
 
 
 
-
 if __name__ == "__main__":
     fragment_image = cv2.imread(get_img_path(IMAGE_NAME), cv2.IMREAD_COLOR)
-
-
-    print("The number of black pixel in the image is {}%".format(get_percentage_of_black_pixels(fragment_image)))
 
     # cv2.imshow('image', fragment_image)
     # cv2.waitKey(0)
