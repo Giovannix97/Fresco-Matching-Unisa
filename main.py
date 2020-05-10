@@ -53,9 +53,24 @@ def get_image_color_levels(opened_image):
     return color_levels
 
 
+
+
+def rotate_image(image, angle, center = None, scale = 1.0):
+    (h, w) = image.shape[:2]
+
+    if center is None:
+        center = (w / 2, h / 2)
+
+    # Perform the rotation
+    M = cv2.getRotationMatrix2D(center, angle, scale)
+    rotated = cv2.warpAffine(image, M, (w, h))
+
+    return rotated
+
+
 def get_percentage_of_black_pixels(opened_image):
     # TODO
-    # This method must me implemented
+    # This method must be implemented
     pass
 
     #return calculate_percentage(black_pixels_count, pixel_count + black_pixels_count)
@@ -63,7 +78,7 @@ def get_percentage_of_black_pixels(opened_image):
 
 def get_percentage_of_white_pixels(opened_image):
     # TODO
-    # This method must me implemented
+    # This method must be implemented
     pass
 
     # return calculate_percentage(white_pixels_count, pixel_count + white_pixels_count)
@@ -84,9 +99,9 @@ def show_colors_histogram(colored_opened_image):
 if __name__ == "__main__":
     fragment_image = cv2.imread(get_img_path(IMAGE_NAME), cv2.IMREAD_COLOR)
 
-    # cv2.imshow('image', fragment_image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow('image', fragment_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 
