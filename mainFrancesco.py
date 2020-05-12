@@ -1,7 +1,7 @@
 import cv2
-from pixel_manipulator import *
+import numpy as np
 
-img = cv2.imread('./image/brouge1.png')
+img = cv2.imread('./image/brouge1.png',cv2.IMREAD_COLOR)
 #total number of pixel
 print(img.size)
 cv2.imshow('Brouge1', img)
@@ -19,7 +19,8 @@ print('Image Width {}'.format(img.shape[1]))
 #scorro le righe i e le colonne j
 for i in range(height):
     for j in range(width):
-        color = get_pixel_color(img, i, j)
+        color=img[i,j]
+
         print(color)
 
 
