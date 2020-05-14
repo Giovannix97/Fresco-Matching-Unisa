@@ -1,8 +1,11 @@
 import logging
 import cv2
 import traceback
+import logging
 from matplotlib import pyplot as plt
 
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def get_image_size(opened_image):
@@ -70,26 +73,11 @@ def show_colors_histogram(colored_opened_image):
         plt.xlim([0, 256])
     plt.show()
 
-def print_pixels_values(opened_image):
-    try:
-        print(opened_image)
-    except(Exception):
-        logging.error("Are you sure this image is a numpy array?")
-        traceback.print_exc()
+# def print_pixels_values(opened_image):
+#     try:
+#         print(opened_image)
+#     except(Exception):
+#         logging.error("Are you sure this image is a numpy array?")
+#        traceback.print_exc()
 
 
-
-def get_percentage_of_black_pixels(opened_image):
-    # TODO
-    # This method must be implemented
-    pass
-
-    #return calculate_percentage(black_pixels_count, pixel_count + black_pixels_count)
-
-
-def get_percentage_of_white_pixels(opened_image):
-    # TODO
-    # This method must be implemented
-    pass
-
-    # return calculate_percentage(white_pixels_count, pixel_count + white_pixels_count)

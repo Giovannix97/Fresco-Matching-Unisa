@@ -1,8 +1,10 @@
 import logging
+import numpy as np
 from image_manipulator import get_image_size
 from utils import calculate_percentage
 
-logging.basicConfig(level=logging.DEBUG)
+
+logging.basicConfig(level=logging.disable())
 
 
 def get_pixel_color(image, x, y):
@@ -19,7 +21,7 @@ def get_pixel_color(image, x, y):
     return image[x, y]
 
 
-def change_pixel_color_and_return_image_RGB(image, x, y, blue_value, green_value, red_value):
+def change_pixel_color_and_return_image_BGR(image, x, y, blue_value, green_value, red_value):
     """
     Manipulate BGR value of a specified pixel and returns a new image
 
@@ -95,3 +97,24 @@ def get_percentage_of_black_neighbors(image, x, y):
             black_pixels_count += 1
 
     return calculate_percentage(black_pixels_count,8)
+
+
+def get_blue_neighbors_pixel_values(image, x, y):
+    list_of_neighbors_pixels = get_neighbors_pixels_colors(image,x,y)
+    numpy_array = np.array(list_of_neighbors_pixels)
+
+    return numpy_array[:,0]
+
+
+def get_green_neighbors_pixel_values(image, x, y):
+    list_of_neighbors_pixels = get_neighbors_pixels_colors(image, x, y)
+    numpy_array = np.array(list_of_neighbors_pixels)
+
+    return numpy_array[:,1]
+
+
+def get_red_neighbors_pixel_values(image, x, y):
+    list_of_neighbors_pixels = get_neighbors_pixels_colors(image, x, y)
+    numpy_array = np.array(list_of_neighbors_pixels)
+
+    return numpy_array[:,2]
