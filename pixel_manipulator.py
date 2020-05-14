@@ -1,3 +1,5 @@
+from image_manipulator import get_image_size
+
 def get_pixel_color(image, x, y):
     """
     Return BGR specified pixel color value
@@ -45,6 +47,15 @@ def get_neighbors_pixels_colors(image, x, y):
     :param y:
     :return: A list of 8 BGR values
     """
+    # x and y value can't be negatives.
+    if(x < 1) or (y < 1):
+        raise Exception("X and Y must be greater or equal than 1!")
+
+    # Values of row/column can't go further the image.
+    image_size = get_image_size(image)
+    if(x >= image_size[0] - 1) or (y >= image_size[1] - 1):
+        raise Exception("Please specify a lower value for x or y. It can't be equal to the maximum value of rows/columns.")
+
     pixels_colors_values_list = []
     for row in range(x - 1, x + 2):
         for column in range(y - 1, y + 2):
