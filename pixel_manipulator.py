@@ -1,4 +1,9 @@
+import logging
 from image_manipulator import get_image_size
+from utils import calculate_percentage
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 def get_pixel_color(image, x, y):
     """
@@ -67,3 +72,26 @@ def get_neighbors_pixels_colors(image, x, y):
     return pixels_colors_values_list
 
 
+def get_percentage_of_black_neighbors(image, x, y):
+    """
+    Get the percentage of black pixels that surround a pixel.
+
+    :param image:
+    :param x:
+    :param y:
+    :return: A percentage that indicates the amount of black in the image.
+    """
+
+    # Get all neighbors BGR values
+    neighbors_values = get_neighbors_pixels_colors(image,x,y)
+    logging.info(neighbors_values)
+
+    black_pixels_count = 0
+
+    for row in neighbors_values:
+        blue,green,red = row
+        if(blue == 0) and (green == 0) and (red == 0):
+            # The pixel is black
+            black_pixels_count += 1
+
+    return calculate_percentage(black_pixels_count,8)
