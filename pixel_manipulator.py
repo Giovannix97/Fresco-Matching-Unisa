@@ -121,9 +121,25 @@ def get_red_neighbors_pixel_values(image, x, y):
     return numpy_array[:,2]
 
 def is_image_pixel_black(image,x,y):
+    """
+    Check if the pixel of a selected image is black.
+
+
+    :param image:
+    :param x:
+    :param y:
+    :return: True if the pixel is black,False otherwise
+    """
     return (get_pixel_color(image,x,y) == [0,0,0]).all()
 
 def is_pixel_black(BGR_value):
+    """
+    Check if the pixel (in form of Numpy Array) is black.
+
+
+    :param BGR_value: Numpy array of 3 values: Blue, Green, Red
+    :return: True if the pixel is black,False otherwise
+    """
     return (BGR_value == [0,0,0]).all()
 
 

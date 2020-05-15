@@ -8,7 +8,7 @@ from utils import *
 
 logging.basicConfig(level=logging.DEBUG)
 
-IMAGE_NAME = "frag_2.png"
+IMAGE_NAME = "frag_457.png"
 
 
 
@@ -48,25 +48,49 @@ def expand_image(image,iteration):
     MAXIMUM_PERCETANGE_OF_BLACK = 80
     logging.info("RIGHT_COLUMN_BOUND: {}. BOTTOM_ROW_BOUND: {}".format(RIGHT_COLUMN_BOUND,BOTTOM_ROW_BOUND))
 
-
-    for row in range(TOP_ROW_BOUND,BOTTOM_ROW_BOUND):
-        for column in range(LEFT_COLUMN_BOUND,RIGHT_COLUMN_BOUND):
-            if(is_image_pixel_black(image,row,column)):
-                black_neigh_percent = get_percentage_of_black_neighbors(image,row,column)
-                if(black_neigh_percent > MINIMUM_PERCENTAGE_OF_BLACK) and (black_neigh_percent < MAXIMUM_PERCETANGE_OF_BLACK):
-                    neighbors_color_values = get_neighbors_pixels_colors(image,row,column)
+    
+    for row in range(TOP_ROW_BOUND,IMAGE_CENTER_X):
+        for column in range(RIGHT_COLUMN_BOUND,IMAGE_CENTER_Y):
+            if (is_image_pixel_black(image, row, column)):
+                black_neigh_percent = get_percentage_of_black_neighbors(image, row, column)
+                if (black_neigh_percent > MINIMUM_PERCENTAGE_OF_BLACK) and (black_neigh_percent < MAXIMUM_PERCETANGE_OF_BLACK):
+                    neighbors_color_values = get_neighbors_pixels_colors(image, row, column)
                     for neighbor_value in neighbors_color_values:
-                        if(is_pixel_black(neighbor_value)):
+                        if (is_pixel_black(neighbor_value)):
                             pass
                         else:
-                            # Last neighbor
-                            if(iteration < 5):
-                                #image = change_pixel_color_and_return_image_BGR(image,row,column,0,0,255)
-                                image = change_pixel_color_and_return_image_BGR(image,row,column,
+                            image = change_pixel_color_and_return_image_BGR(image, row, column,
                                                                             get_blue_value_of_a_pixel(neighbor_value),
                                                                             get_green_value_of_a_pixel(neighbor_value),
                                                                             get_red_value_of_a_pixel(neighbor_value))
-
+    for row in range(BOTTOM_ROW_BOUND,IMAGE_CENTER_X):
+        for column in range(LEFT_COLUMN_BOUND,IMAGE_CENTER_Y):
+            if (is_image_pixel_black(image, row, column)):
+                black_neigh_percent = get_percentage_of_black_neighbors(image, row, column)
+                if (black_neigh_percent > MINIMUM_PERCENTAGE_OF_BLACK) and (black_neigh_percent < MAXIMUM_PERCETANGE_OF_BLACK):
+                    neighbors_color_values = get_neighbors_pixels_colors(image, row, column)
+                    for neighbor_value in neighbors_color_values:
+                        if (is_pixel_black(neighbor_value)):
+                            pass
+                        else:
+                            image = change_pixel_color_and_return_image_BGR(image, row, column,
+                                                                            get_blue_value_of_a_pixel(neighbor_value),
+                                                                            get_green_value_of_a_pixel(neighbor_value),
+                                                                            get_red_value_of_a_pixel(neighbor_value))
+    for row in range(BOTTOM_ROW_BOUND,IMAGE_CENTER_X):
+        for column in range(RIGHT_COLUMN_BOUND,IMAGE_CENTER_Y):
+            if (is_image_pixel_black(image, row, column)):
+                black_neigh_percent = get_percentage_of_black_neighbors(image, row, column)
+                if (black_neigh_percent > MINIMUM_PERCENTAGE_OF_BLACK) and (black_neigh_percent < MAXIMUM_PERCETANGE_OF_BLACK):
+                    neighbors_color_values = get_neighbors_pixels_colors(image, row, column)
+                    for neighbor_value in neighbors_color_values:
+                        if (is_pixel_black(neighbor_value)):
+                            pass
+                        else:
+                            image = change_pixel_color_and_return_image_BGR(image, row, column,
+                                                                            get_blue_value_of_a_pixel(neighbor_value),
+                                                                            get_green_value_of_a_pixel(neighbor_value),
+                                                                            get_red_value_of_a_pixel(neighbor_value))
 
 
 
