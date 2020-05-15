@@ -67,6 +67,7 @@ def get_neighbors_pixels_colors(image, x, y):
     for row in range(x - 1, x + 2):
         for column in range(y - 1, y + 2):
             if(row == x) and (column == y):
+                # The pixel at the centre is excluded
                 pass
             else:
                 pixels_colors_values_list.append(image[row, column])
@@ -118,3 +119,21 @@ def get_red_neighbors_pixel_values(image, x, y):
     numpy_array = np.array(list_of_neighbors_pixels)
 
     return numpy_array[:,2]
+
+def is_image_pixel_black(image,x,y):
+    return (get_pixel_color(image,x,y) == [0,0,0]).all()
+
+def is_pixel_black(BGR_value):
+    return (BGR_value == [0,0,0]).all()
+
+
+def get_blue_value_of_a_pixel(BGR_value):
+    return BGR_value[0]
+
+
+def get_green_value_of_a_pixel(BGR_value):
+    return BGR_value[1]
+
+
+def get_red_value_of_a_pixel(BGR_value):
+    return BGR_value[2]
