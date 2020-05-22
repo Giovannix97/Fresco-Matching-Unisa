@@ -8,7 +8,7 @@ from utils import *
 
 logging.basicConfig(level=logging.DEBUG)
 
-IMAGE_NAME = "frag_56.png"
+IMAGE_NAME = "frag_2.png"
 
 
 def get_img_path(image_name):
@@ -57,9 +57,8 @@ def expand_image_first_solution(image,iterations):
     # FOURTH CASE: FOURTH QUADRANT 110-110 RIGHT-COLUMN-BOUND BOTTOM-ROW-BOUND
     for i in range(1,iterations):
         image = expand(image, IMAGE_CENTER_X, IMAGE_CENTER_Y, START_ROW_VALUE, START_COLUMN_VALUE)
-        image = expand(image, IMAGE_CENTER_X, IMAGE_CENTER_Y, START_ROW_VALUE, RIGHT_COLUMN_BOUND)
-        image = expand(image, IMAGE_CENTER_X, IMAGE_CENTER_Y, BOTTOM_ROW_BOUND, START_COLUMN_VALUE)
-        image = expand(image, IMAGE_CENTER_X, IMAGE_CENTER_Y, BOTTOM_ROW_BOUND, RIGHT_COLUMN_BOUND, )
+        image = expand(image, IMAGE_CENTER_X, RIGHT_COLUMN_BOUND, START_ROW_VALUE, IMAGE_CENTER_Y)
+        image = expand(image, BOTTOM_ROW_BOUND,IMAGE_CENTER_Y,IMAGE_CENTER_X, START_COLUMN_VALUE)
 
     return image
 
@@ -77,17 +76,33 @@ def expand(image,image_center_x,image_center_y,start_row_value,start_column_valu
                 if (black_neigh_percent > MINIMUM_PERCENTAGE_OF_BLACK) and (
                         black_neigh_percent < MAXIMUM_PERCETANGE_OF_BLACK):
                     neighbors_color_values = get_neighbors_pixels_colors(image, row, column)
+                    blue_values = []
+                    green_values = []
+                    red_values = []
                     for neighbor_value in neighbors_color_values:
-                        if (is_pixel_black(neighbor_value)):
-                            # It's a bad idea to overwrite a black pixel with another black pixel.
-                            pass
-                        else:
-                            # Choose the last of the neighbours
-                            image = change_pixel_color_and_return_image_BGR(image, row, column,
-                                                                            get_blue_value_of_a_pixel(neighbor_value),
-                                                                            get_green_value_of_a_pixel(neighbor_value),
-                                                                            get_red_value_of_a_pixel(neighbor_value))
-                            
+                        blue = get_blue_value_of_a_pixel(neighbor_value)
+                        green = get_green_value_of_a_pixel(neighbor_value)
+                        red = get_red_value_of_a_pixel(neighbor_value)
+
+                        if(blue != 0):
+                            blue_values.append(blue)
+                        if(green != 0):
+                            green_values.append(green)
+                        if(red != 0):
+                            red_values.append(red)
+
+                    average_blue = calculate_int_average(blue_values)
+                    average_green = calculate_int_average(green_values)
+                    average_red = calculate_int_average(red_values)
+
+                    image = change_pixel_color_and_return_image_BGR(image, row, column,
+                                                                   average_blue,
+                                                                   average_green,
+                                                                   average_red)
+
+
+
+
     return image
 
 
@@ -115,8 +130,8 @@ if __name__ == "__main__":
     fragment_image = cv2.imread(get_img_path(IMAGE_NAME), cv2.IMREAD_COLOR)
 
 
-    fragment_image = expand_image_first_solution(fragment_image,20)
-    save_image(fragment_image, "OUT_" + IMAGE_NAME)
+    fragment_image = expand_image_first_solution(fragment_image,4)
+    save_image(fragment_image, "OUT3_" + IMAGE_NAME)
 
     cv2.imshow('image', fragment_image)
     cv2.waitKey(0)
