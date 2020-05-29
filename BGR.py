@@ -1,3 +1,5 @@
+import numpy as np
+
 class BGR:
     """
     A class to model a BGR color used in Open-CV
@@ -57,6 +59,23 @@ class BGR:
 
         # and create an object with them.
         return BGR(blue, green, red)
+
+    @staticmethod
+    def from_BGR_object_to_opencv_pixel(bgr_object):
+        """
+        Method to convert a BGR object in an Open-CV object.
+
+        :param bgr_object: A BGR object.
+        :return: A numpy array that represents the BGR component.
+        """
+
+        # Get the values ...
+        blue = bgr_object.get_blue()
+        green = bgr_object.get_green()
+        red = bgr_object.get_red()
+
+        # and create a numpy array
+        return np.array([blue, green, red])
 
 
 
