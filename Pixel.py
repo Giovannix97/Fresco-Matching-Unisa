@@ -3,6 +3,12 @@ from BGR import *
 
 
 class Pixel:
+    """
+    A class to model a Pixel.
+    A pixel is described by his position (x and y coordinates in the image), by his color (BGR model for Open-CV)
+    and by an accuracy.
+    """
+
     def __init__(self, position=Point(), BGR=BGR(), weight=1):
         """
 
@@ -33,7 +39,7 @@ class Pixel:
     def get_weight(self):
         return self.weight
 
-    def set_position(self,position):
+    def set_position(self, position):
         """
 
         :param position: a Point object composed by two coordinates, x and y.
@@ -41,7 +47,7 @@ class Pixel:
         """
         self.position = position
 
-    def set_BGR(self,BGR):
+    def set_BGR(self, BGR):
         """
 
         :param BGR: a BGR object composed of three colors: blue,green and red
@@ -49,9 +55,8 @@ class Pixel:
         """
         self.BGR = BGR
 
-    def set_weight(self,weight):
+    def set_weight(self, weight):
         self.weight = weight
-
 
     def is_black(self):
         """

@@ -41,7 +41,22 @@ class BGR:
     def set_red(self,red):
         self.red = red
 
+    @staticmethod
+    def from_opencv_pixel_to_BGR_object(cv2_img_pixel):
+        """
+        Method to convert an Open-CV object in a simple BGR object.
 
+        :param cv2_img_pixel: Open_cv pixel in the form of numpy array [b,g,r].
+        :return: A BGR object.
+        """
+
+        # Get the values ...
+        blue = cv2_img_pixel[0]
+        green = cv2_img_pixel[1]
+        red = cv2_img_pixel[2]
+
+        # and create an object with them.
+        return BGR(blue, green, red)
 
 
 
