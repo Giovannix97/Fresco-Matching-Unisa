@@ -78,6 +78,19 @@ class BGR:
         return np.array([blue, green, red])
 
 
+    def is_black(self):
+        """
+        Check if the current color is black.
+
+        :return: True if the color is black.
+        """
+        blue = self.get_blue()
+        green = self.get_green()
+        red = self.get_red()
+
+        if blue == 0 and green == 0 and red == 0:
+            return True
+        return False
 
 
 

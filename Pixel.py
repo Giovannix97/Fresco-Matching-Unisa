@@ -58,16 +58,4 @@ class Pixel:
     def set_weight(self, weight):
         self.weight = weight
 
-    def is_black(self):
-        """
-        Check if the current pixel is black.
 
-        :return: True if the pixel is black.
-        """
-        blue = self.get_BGR().get_blue()
-        green = self.get_BGR().get_green()
-        red = self.get_BGR().get_red()
-
-        if blue == 0 and green == 0 and red == 0:
-            return True
-        return False

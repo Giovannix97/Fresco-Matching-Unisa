@@ -3,7 +3,7 @@ import cv2
 from matplotlib import pyplot as plt
 from Point import *
 from BGR import *
-from utils import calculate_percentage
+from utils import calculate_percentage, is_int_number_even
 
 class Image:
     """
@@ -85,13 +85,15 @@ class Image:
         self.opencv_image[position.get_x(), position.get_y()] = np_array
 
 
-    def get_neighbors_pixel_color(self, position=Point()):
+    def get_neighbors_pixel_color(self, position=Point(), matrix_dimension=3):
         """
         Get all the BGR values of the neighbors.
         Let's consider a 3x3 matrix in which the chosen pixel is at the center. This method
         scan all the 8 pixel that surround the considered one.
 
         :param position:
+        :param matrix_dimension: int number. It represents the number of rows and columns. It must be odd.
+               For example 3,5,7.
         :return: a list of 8 numpy arrays. Each array represents tre BGR component of a neighbor.
         """
 
@@ -103,9 +105,20 @@ class Image:
         if(x >= self.height - 1) or ( y >= self.width - 1):
             raise Exception("Please specify a lower value for x or y. It can't be greater than the maximum value of rows/columns.")
 
+        if not (Image.validate_matrix_dimension(matrix_dimension)):
+            raise Exception("Specified matrix dimension is not correct! Try 3,5,7...")
+        # To have a generic method, I need an offset. This is calculated as the result of an int division.
+        #
+        # EXAMPLE
+        #
+        # Let's consider a 5x5 matrix. The offsets will be 5/2 = 2.
+        # The for loop goes back of 2 rows and 2 columns
+        offset = int(matrix_dimension/2)
+
         pixels_colors_values = []
-        for row in range(x-1, x+2):
-            for column in range(y-1, y+2):
+
+        for row in range(x-offset, x+offset+1):
+            for column in range(y-offset, y+offset+1):
                 if(row == x) and (column == y):
                     pass
                 else:
@@ -115,7 +128,7 @@ class Image:
         return pixels_colors_values
 
 
-    def get_percentage_of_black_neighbors(self, position=Point()):
+    def get_percentage_of_black_neighbors(self, position=Point(), matrix_dimension=3):
         """
         Get the percentage of black pixels that surround a pixel.
         Think it as a 3x3 matrix in which the pixel is at the centre.
@@ -125,52 +138,102 @@ class Image:
         """
 
         # Get all neighbors BGR values
-        neighbors_color_values = self.get_neighbors_pixel_color(position)
+        neighbors_color_values = self.get_neighbors_pixel_color(position,matrix_dimension)
         black_pixels_count = 0
 
 
-        for row in neighbors_color_values:
-            blue, green, red = row
+        for neighbor in neighbors_color_values:
+            blue, green, red = neighbor
             if(blue == 0 and green == 0 and red == 0):
                 black_pixels_count += 1
 
         return calculate_percentage(black_pixels_count,8)
 
+    @staticmethod
+    def validate_matrix_dimension(matrix_dimension):
+        """
+        Validate the parameter matrix dimension.
+        Correct values are 3,5,7,9....
+        The value represents the number of rows and columns of the matrix.
 
-    def get_blue_neighbors_pixel_values(self, position=Point()):
+        :param matrix_dimension:
+        :return: True if the param is an acceptable value for the matrix.
+        """
+        return ( not is_int_number_even(matrix_dimension)) and matrix_dimension > 1
+
+
+    def get_blue_neighbors_pixel_values(self, position=Point(), matrix_dimension=3):
         """
         Select just the blue values of a numpy array.
 
         :param position:
         :return: a new numpy array of 8 values. Each value represent the blue component of BGR.
         """
-        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position)
+        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position, matrix_dimension)
         numpy_array = np.array(list_of_neighbors_pixels)
         return numpy_array[:,0]
 
 
-    def get_green_neighbors_pixel_values(self, position=Point()):
+    def get_green_neighbors_pixel_values(self, position=Point(), matrix_dimension=3):
         """
         Select just the green values of a numpy array.
 
         :param position:
         :return: a new numpy array of 8 values. Each value represent the green component of BGR.
         """
-        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position)
+        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position,matrix_dimension)
         numpy_array = np.array(list_of_neighbors_pixels)
         return numpy_array[:,1]
 
 
-    def get_red_neighbors_pixel_values(self, position=Point()):
+    def get_red_neighbors_pixel_values(self, position=Point(), matrix_dimension=3):
         """
         Select just the red values of a numpy array.
 
         :param position:
         :return: a new numpy array of 8 values. Each value represent red component of BGR.
         """
-        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position)
+        list_of_neighbors_pixels = self.get_neighbors_pixel_color(position,matrix_dimension)
         numpy_array = np.array(list_of_neighbors_pixels)
         return numpy_array[:,2]
+
+    def get_percentage_of_black_pixels_in_the_image(self):
+        """
+        Get the amount of black in the image.
+        Remember: the fragment has a black background.
+
+        :return: float value that indicates the percentage of black in the image.
+        """
+
+        black_pixels_count = 0
+        total_pixels_count = 0
+
+        for i in range(0, self.width):
+            for j in range(0, self.height):
+                position = Point(i, j)
+                total_pixels_count += 1
+                pixel = self.get_pixel_color_BGR(position)
+                if(pixel.is_black()):
+                    black_pixels_count += 1
+
+        return calculate_percentage(black_pixels_count,total_pixels_count)
+
+
+    def compare_percentage_of_black(self, second_image):
+        """
+        Compare the amount of black color in two distinct images.
+
+        :param second_image: another Image to make the comparison.
+        :return: a positive percentage (float value) that indicates the difference of the two images.
+        """
+
+        first_image_percent = self.get_percentage_of_black_pixels_in_the_image()
+        second_image_percent = second_image.get_percentage_of_black_pixels_in_the_image()
+
+        if(first_image_percent > second_image_percent):
+            return first_image_percent - second_image_percent
+        else:
+            return second_image_percent - first_image_percent
 
 
     def show_colors_histogram(self):
