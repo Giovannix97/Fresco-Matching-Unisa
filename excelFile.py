@@ -2,7 +2,6 @@ from openpyxl import load_workbook
 import xlsxwriter
 import os
 
-
 def createExcel(filename):
     """
         Get the name of the chosen fragment for create file Excel.
@@ -14,8 +13,8 @@ def createExcel(filename):
     workbook = xlsxwriter.Workbook(filename)
 
     os.chdir(folder_path + "\FileExcel")
-
     workbook.close()
+
     return folder_path + "\FileExcel" + "\\" + filename
 
 def writeExcel(path,row,column,value,filename):

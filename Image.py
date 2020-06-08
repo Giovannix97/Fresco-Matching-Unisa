@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from Point import *
 from BGR import *
 from utils import calculate_percentage, is_int_number_even
+from excelFile import *
 
 class Image:
     """
@@ -84,17 +85,63 @@ class Image:
         np_array = BGR.from_BGR_object_to_opencv_pixel(bgr)
         self.opencv_image[position.get_x(), position.get_y()] = np_array
 
+    def get_maximum_weight_pixels(self, sheet, maximum_weight, position=Point(), matrix_dimension=3):
+
+        x = position.get_x()
+        y = position.get_y()
+
+        offset = int(matrix_dimension / 2)
+
+        pixels_colored_positions = []
+
+        for row in range(x-offset, x+offset+1):
+            for column in range(y-offset, y+offset+1):
+                if(row == x) and (column == y):
+                    pass
+                else:
+                    temp_pixel_weight = sheet.cell(row=row,column=column).value
+                    if(temp_pixel_weight == maximum_weight):
+                        position = Point(row,column)
+                        pixels_colored_positions.append(position)
+
+        return pixels_colored_positions
+
+    def get_neighbors_pixel_weight(self, sheet, position=Point(), matrix_dimension=3, ):
+        """
+        Get all the weights around a chosen pixel.
+        Let's (for example) consider a 3x3 matrix in which the chosen pixel is at the center. This method
+        scan all the 8 pixel that surround the considered one.
+        :param position: coordinates (x and y) of the chosen pixel.
+        :param matrix_dimension: Dimension of the matrix. In a 3x3 matrix there are 8 neighbors, in 5x5 48 neighbors...
+        :return: a list of int values that represent weights.
+        """
+
+        x = position.get_x()
+        y = position.get_y()
+
+        offset = int(matrix_dimension / 2)
+
+        pixels_weights_values = []
+
+        for row in range(x-offset, x+offset+1):
+            for column in range(y-offset, y+offset+1):
+                if(row == x) and (column == y):
+                    pass
+                else:
+                    pixels_weights_values.append(sheet.cell(row=row,column=column).value)
+
+        return pixels_weights_values
 
     def get_neighbors_pixel_color(self, position=Point(), matrix_dimension=3):
         """
         Get all the BGR values of the neighbors.
-        Let's consider a 3x3 matrix in which the chosen pixel is at the center. This method
+        Let's (for example) consider a 3x3 matrix in which the chosen pixel is at the center. This method
         scan all the 8 pixel that surround the considered one.
 
         :param position:
         :param matrix_dimension: int number. It represents the number of rows and columns. It must be odd.
                For example 3,5,7.
-        :return: a list of 8 numpy arrays. Each array represents tre BGR component of a neighbor.
+        :return: a list of numpy arrays. Each array represents tre BGR component of a neighbor.
         """
 
         x = position.get_x()

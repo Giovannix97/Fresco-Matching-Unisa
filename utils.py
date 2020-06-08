@@ -72,24 +72,6 @@ def verify_if_path_exists(path):
     return os.path.exists(path)
 
 
-
-def save_image(image, filename="output_img.png"):
-    """
-    Save the specified image in the "fragments" folder.
-
-    :param image: Image to save
-    :param filename: A name for the image with the extension. If not specified the default is output_img.png
-    :return:
-    """
-    folder_path = get_folder_path()
-    os.chdir(folder_path)
-
-    try:
-        cv2.imwrite(filename, image)
-        print("Image saved successfully!")
-    except:
-        print("Error while saving image!")
-
 def rotate_image(image, angle, center = None, scale = 1.0):
     """
     Rotate and image using grades.
